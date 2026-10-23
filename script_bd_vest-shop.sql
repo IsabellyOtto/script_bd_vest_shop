@@ -135,3 +135,15 @@ SELECT*FROM log_auditoria_banimento
 
 
 INSERT INTO log_auditoria_banimento(id_anunciante_banido, id_gestor_responsavel, data_ultima_atualizacao)VALUES ('', '', '', '', '');
+
+CREATE TABLE interacao_recomendacao (
+  id_interacao                   int not null,
+  id_usuario                     int not null,
+  curtiu                         boolean,
+  visualizou                     boolean,
+  data_interacao                 timestamp
+);
+SELECT*FROM interacao_recomendacao
+
+
+INSERT INTO interacao_recomendacao(id_interacao,id_usuariodata_interacao)VALUES ('', '', '', '', '');

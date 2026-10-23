@@ -1,3 +1,4 @@
+
 CREATE TABLE usuario(
 
   id_usuario SERIAL PRIMARY KEY,
@@ -93,7 +94,7 @@ SELECT * FROM denuncia_produto;
 INSERT INTO denuncia_produto(fk_produto, id_denuncia, motivo_denuncia,  evidencia_url, status, data_denuncia) VALUES ('', '', '', '', '', '', '');
 
 CREATE TABLE perfil_preferencias_cliente( 
-  
+
   id_perfil SERIAL PRIMARY KEY,
   fk_usuario int not null,
   genero varchar(20),
@@ -103,7 +104,7 @@ CREATE TABLE perfil_preferencias_cliente(
   orcamento_medio decimal(10,2),
   data_atualizacao timestamp
   );
-  
+
 SELECT * FROM  perfil_preferencias_cliente;
 
 INSERT INTO perfil_preferencias_cliente( genero, faixa_etaria, estilo_predominante, tamanho_habitual,  estilo_preferencia, orcamento_medio, data_atualizacao) VALUES ('Masculino', '1.63', 'nike', '150.00', '05/03/2027',);
@@ -121,3 +122,16 @@ SELECT*FROM item_pedido
 
 INSERT INTO item_pedido(id_pedido, id_produto)VALUES ('', '', '', '', '');
 
+CREATE TABLE log_auditoria_banimento (
+  id_log SERIAL PRIMARY KEY,
+  id_anunciante_banido                    INT not null,
+  id_gestor_responsavel                   INT not null,
+  motivo_banimento                        INT not null,
+  quantidade_evidencias_confirmadas       INT not null,
+  saldo_retido_ressarcimento              DECIMAL(10,2),
+  data_ultima_atualizacao                 timestamp
+);
+SELECT*FROM log_auditoria_banimento
+
+
+INSERT INTO log_auditoria_banimento(id_anunciante_banido, id_gestor_responsavel, data_ultima_atualizacao)VALUES ('', '', '', '', '');

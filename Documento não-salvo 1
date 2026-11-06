@@ -122,7 +122,7 @@ CREATE TABLE interacao_recomendacao (
   id_interacao                   int not null,
   id_usuario                     int not null,
   curtiu                         boolean,
-  visualizou                     boolean,
+  visualizou                     boolean, 
   data_interacao                 timestamp
 );
 SELECT*FROM interacao_recomendacao

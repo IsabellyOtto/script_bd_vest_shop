@@ -1,46 +1,44 @@
-
 CREATE TABLE usuario(
 
   id_usuario SERIAL PRIMARY KEY,
 
   nome                              varchar(100) not null,
   email                             varchar(100) not null,
-  senha_hash                        varchar(20) not null,
+  senha_hash                        varchar(255) not null,
   data_nascimento                   date not null,
   eh_maior_idade                    boolean not null,
   tipo_perfil                       varchar(255) not null,
   participa_programa_fidelidade     boolean,
   data_cadastro                     timestamp
-
 );
-
 
 SELECT * FROM usuario;
+drop table usuario
+
+INSERT INTO usuario (nome, email, senha_hash, data_nascimento, tipo_perfil, eh_maior_idade, participa_programa_fidelidade, data_cadastro) VALUES ('Gabriel', 'Gabriel@gmail', '123456789', '07/04/2000', '19','cliente', 'false', '2025/10/05');  
+
+INSERT INTO usuario (nome, email, senha_hash, data_nascimento, tipo_perfil, eh_maior_idade, participa_programa_fidelidade, data_cadastro) VALUES ('Giovana Duarte', 'Duarte@gmail', '987654321', '22/01/2003', '23','admin', 'true', '2024/06/09');  
+
+INSERT INTO usuario (nome, email, senha_hash, data_nascimento, tipo_perfil, eh_maior_idade, participa_programa_fidelidade, data_cadastro) VALUES ('Pedro da Cunha', 'Pedro@gmail', '0123456789', '16/10/2001', '25', 'cliente','true', '2026/09/10');  
 
 
-INSERT INTO usuario (nome, email, senha_hash, data_nascimento, eh_maior_idade, participa_programa_fidelidade, data_cadastro) VALUES ('Gabriel', 'Gabriel@gmail.com', '12345678945987#@%098', '07/04/2000', 'sim', 'sim', '08/12/2024');
+CREATE TABLE notificacao_sistema(
 
-CREATE TABLE produto(
+ id_notificacao SERIAL PRIMARY KEY,
 
-  id_produto SERIAL PRIMARY KEY,
-
-  id_anunciante   int not null,
-  nome     varchar(150) not null,
-  marca    varchar(100) not null,
-  descricao             text,
-  tamanho               varchar(10) not null,
-  genero_indicado       varchar(20),
-  estilo                varchar(15) not null,
-  preco_base_brl        decimal(10,2) not null,
-  quantidade_estoque    int not null,
-  status                varchar(50) not null,
-  data_cadastro         timestamp
-
+ id_usuario               int not null,
+ tipo_notificacao         varchar(50) not null,
+ titulo                   varchar(150) not null,
+ mensagem                 text not null,
+ canal                    varchar(20) not null,
+ status                   status_notificacao_enum not null, 
+ opt_out_respeitado       boolean
+ data_envio               timestamp
 );
 
-SELECT * FROM produto;
+SELECT * FROM notificacao_sistema;
 
-INSERT INTO produto (nome, id_anunciante, marca, descricao, tamanho, genero_indicado, estilo, preco_base_brl, quantidade_estoque, status, data_cadastro) VALUES ('Gabriel', '112345678', 'nike', 'gosto da nike', 'M', 'masculino', 'radical', 'R$100.00', '20', 'valioso', '2026/05/30');
+INSERT INTO notificacao_sistema (id_usuario, tipo_notificacao,  titulo, mensagem, canal, status, data_envio) VALUES ('', '', '', '', '', '', '', '', '', '', '');
 
 CREATE TABLE pedido(
 
@@ -61,32 +59,15 @@ SELECT * FROM pedido;
 
 INSERT INTO pedido (id_comprador, valor_subtotal, valor_frete, insento_frete, cep_destino, regiao_metropolitana, status, data_pedido) VALUES ('', '', '', '', '', '', '', '', '', '', '');
 
-CREATE TABLE notificacao_sistema(
-
- id_notificacao SERIAL PRIMARY KEY,
-
- id_usuario               int not null,
- tipo_notificacao         varchar(50) not null,
- titulo                   varchar(150) not null,
- mensagem                 text not null,
- canal                    varchar(20) not null,
- status                   status_notificacao_enum not null, 
- opt_out_respeitado       boolean
- data_envio               timestamp
-);
-
-SELECT * FROM notificacao_sistema;
-
-INSERT INTO notificacao_sistema (id_usuario, tipo_notificacao,  titulo, mensagem, canal, status, data_envio) VALUES ('', '', '', '', '', '', '', '', '', '', '');
 
 CREATE TABLE denuncia_produto( 
   id_denuncia_produto SERIAL PRIMARY KEY, 
-   fk_produto int,
-   id_denuncia int,
-   motivo_denuncia text,
-   evidencia_url varchar(255),
-   status varchar(255),
-   data_denuncia timestamp
+   fk_produto            int,
+   id_denuncia           int,
+   motivo_denuncia       text,
+   evidencia_url         varchar(255),
+   status                varchar(255),
+   data_denuncia         timestamp
 );
 
 SELECT * FROM denuncia_produto;
@@ -94,7 +75,7 @@ SELECT * FROM denuncia_produto;
 INSERT INTO denuncia_produto(fk_produto, id_denuncia, motivo_denuncia,  evidencia_url, status, data_denuncia) VALUES ('', '', '', '', '', '', '');
 
 CREATE TABLE perfil_preferencias_cliente( 
-
+  
   id_perfil SERIAL PRIMARY KEY,
   fk_usuario int not null,
   genero varchar(20),
@@ -104,7 +85,7 @@ CREATE TABLE perfil_preferencias_cliente(
   orcamento_medio decimal(10,2),
   data_atualizacao timestamp
   );
-
+  
 SELECT * FROM  perfil_preferencias_cliente;
 
 INSERT INTO perfil_preferencias_cliente( genero, faixa_etaria, estilo_predominante, tamanho_habitual,  estilo_preferencia, orcamento_medio, data_atualizacao) VALUES ('Masculino', '1.63', 'nike', '150.00', '05/03/2027',);
@@ -122,6 +103,7 @@ SELECT*FROM item_pedido
 
 INSERT INTO item_pedido(id_pedido, id_produto)VALUES ('', '', '', '', '');
 
+
 CREATE TABLE log_auditoria_banimento (
   id_log SERIAL PRIMARY KEY,
   id_anunciante_banido                    INT not null,
@@ -134,7 +116,7 @@ CREATE TABLE log_auditoria_banimento (
 SELECT*FROM log_auditoria_banimento
 
 
-INSERT INTO log_auditoria_banimento(id_anunciante_banido, id_gestor_responsavel, data_ultima_atualizacao)VALUES ('', '', '', '', '');
+INSERT INTO log_auditoria_banimento(id_anunciante_banido, id_gestor_responsavel, data_ultima_atualizacao) VALUES ('', '', '', '', '');
 
 CREATE TABLE interacao_recomendacao (
   id_interacao                   int not null,
@@ -146,4 +128,4 @@ CREATE TABLE interacao_recomendacao (
 SELECT*FROM interacao_recomendacao
 
 
-INSERT INTO interacao_recomendacao(id_interacao,id_usuariodata_interacao)VALUES ('', '', '', '', '');
+INSERT INTO interacao_recomendacao(id_interacao,id_usuariodata_interacao) VALUES ('', '', '', '', '');
